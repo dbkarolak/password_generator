@@ -6,32 +6,31 @@ pipeline{
     }
 
     environment {
-        FIREBASE_DEPLOY_TOKEN = credentials('firebase-token')
+    FIREBASE_DEPLOY_TOKEN = credentials('firebase-token')
     }
 
-    stages {
-        stage('Building') {
-            steps {
-                sh 'npm install -g firebase-tools'
+    stages{
+        stage('Building'){
+            steps{
+            sh 'npm install -g firebase-tools'
             }
         } 
 
-        stage('Testing') {
-            steps {
-                echo 'This is testing'
-		echo "Firebase Token: ${FIREBASE_DEPLOY_TOKEN}"
+         stage('Testing'){
+            steps{
+            echo 'This is testing'
             }
         }
 
-        stage('Staging') {
-            steps {
-                sh 'firebase deploy -P staging-replica-c4415 --token "$FIREBASE_DEPLOY_TOKEN"'
+        stage('Staging'){
+            steps{
+            sh 'firebase deploy -P password-generator-staging --token "$FIREBASE_DEPLOY_TOKEN"'
             }
         }
 
-        stage('Production') {
-            steps {
-                sh 'firebase deploy -P production-replica-bc191 --token "$FIREBASE_DEPLOY_TOKEN"'
+        stage('Production'){
+            steps{
+            sh 'firebase deploy -P password-generator-production --token "$FIREBASE_DEPLOY_TOKEN"'
             }
         }
     }
