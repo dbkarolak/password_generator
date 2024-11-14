@@ -13,10 +13,10 @@ pipeline {
         stage('Building') {
             steps {
                 script {
-                    // Criar o diretório .npm se não existir e definir permissões para qualquer usuário
+                    // Usar um diretório dentro do workspace do Jenkins para npm cache
                     sh """
-                        mkdir -p /.npm
-                        chmod -R 777 /.npm
+                        mkdir -p ${env.WORKSPACE}/.npm
+                        npm config set cache ${env.WORKSPACE}/.npm --global
                     """
                     // Instalar o firebase-tools
                     sh 'npm install -g firebase-tools'
