@@ -13,13 +13,13 @@ pipeline {
         stage('Building') {
             steps {
                 script {
-                    // Usar um diretório dentro do workspace do Jenkins para npm cache
+                    // Set npm cache directory to a location within the workspace
                     sh """
                         mkdir -p ${env.WORKSPACE}/.npm
                         npm config set cache ${env.WORKSPACE}/.npm --global
                     """
-                    // Instalar o firebase-tools
-                    sh 'npm install -g firebase-tools'
+                    // Install firebase-tools with npm without global flag to avoid permission issues
+                    sh 'npm install firebase-tools'
                 }
             }
         }
@@ -32,13 +32,13 @@ pipeline {
 
         stage('Staging') {
             steps {
-                sh 'firebase deploy -P staging-replica-c4415 --token "$FIREBASE_DEPLOY_TOKEN"'
+                sh './node_modules/.bin/firebase deploy -P staging-replica-c4415 --token "$FIREBASE_DEPLOY_TOKEN"'
             }
         }
 
         stage('Production') {
             steps {
-                sh 'firebase deploy -P production-replica-bc191 --token "$FIREBASE_DEPLOY_TOKEN"'
+                sh './node_modules/.bin/firebase deploy -P production-replica-bc191 --token "$FIREBASE_DEPLOY_TOKEN"'
             }
         }
     }
