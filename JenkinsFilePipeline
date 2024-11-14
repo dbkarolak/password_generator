@@ -13,12 +13,14 @@ pipeline {
         stage('Building') {
             steps {
                 script {
-                    // Set npm cache directory to a location within the workspace
+                    // Use a directory within the workspace for npm cache
                     sh """
-                        mkdir -p ${env.WORKSPACE}/.npm
+                        mkdir -p ${env.WORKSPACE}/.npm-global
+                        npm config set prefix ${env.WORKSPACE}/.npm-global
                         npm config set cache ${env.WORKSPACE}/.npm --global
+                        export PATH=${env.WORKSPACE}/.npm-global/bin:\$PATH
                     """
-                    // Install firebase-tools with npm without global flag to avoid permission issues
+                    // Install firebase-tools without global flag to avoid permission issues
                     sh 'npm install firebase-tools'
                 }
             }
