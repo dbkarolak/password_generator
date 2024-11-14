@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:18.17.1-alpine3.18'
-            args '-u root --memory=512m --cpus=1'
+            args '-u root'
         }
     }
 
